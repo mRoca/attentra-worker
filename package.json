@@ -1,0 +1,19 @@
+{
+  "name": "attentra-worker",
+  "version": "0.0.0",
+  "description": "",
+  "main": "worker.js",
+  "scripts": {
+  	"start": "node worker.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Quentin Dreyer <quentin.dreyer@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "gpio": "~0.2.5",
+    "sqlite3": "~2.2.7",
+    "promise": "~6.0.0",
+    "underscore": "~1.7.0",
+    "request": "~2.44.0"
+  }
+}
