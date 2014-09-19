@@ -4,8 +4,10 @@
   "description": "",
   "main": "worker.js",
   "scripts": {
-  	"start": "node worker.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node worker.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "//": "npm run-script badge",
+    "badge": "node worker.js badge"
   },
   "author": "Quentin Dreyer <quentin.dreyer@gmail.com>",
   "license": "ISC",
@@ -14,6 +16,7 @@
     "sqlite3": "~2.2.7",
     "promise": "~6.0.0",
     "underscore": "~1.7.0",
-    "request": "~2.44.0"
+    "request": "~2.44.0",
+    "bunyan": "~1.0.1"
   }
 }
