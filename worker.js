@@ -1,72 +1,85 @@
-
 // ======================================================================================================================================================
-// NPM Modules
+// Modules
 // ======================================================================================================================================================
 
-var _ = require("underscore");
-var fs = require("fs");
-var gpio = require("gpio");
-var crypto = require("crypto");
+var _ 		= require("underscore");
+var fs 		= require("fs");
+var gpio 	= require("gpio");
 var promise = require("promise");
-var domain = require("domain").create();
+var domain 	= require("domain").create();
 
 // ======================================================================================================================================================
 // Libs
 // ======================================================================================================================================================
 
-var init = require("./lib/init");
-var api = require("./lib/api");
-var db = require("./lib/db");
-var conf = require("./lib/config");
-var time = require("./lib/time");
-var log = require("./lib/log");
-
-// ======================================================================================================================================================
-// Setup Worker
-// ======================================================================================================================================================
-
-domain.on("error", function(err) {
-	log.critical(err);
-}).run(function() {
-	db.init().done(main);
-});
+var init 	= require("./lib/init");
+var api 	= require("./lib/api");
+var db 		= require("./lib/db");
+var conf 	= require("./lib/config");
+var time 	= require("./lib/time");
+var log 	= require("./lib/log").child({lib: "worker"});
 
 // ======================================================================================================================================================
 // Worker Functions
 // ======================================================================================================================================================
 
-function main() {
-	log.info("Starting Worker...");
-
-	// Simulate Badging
-	if (process.argv && process.argv.length === 3 && process.argv[2] == "badge")
-	{
-		var identifier = "'" + crypto.randomBytes(10).toString("base64") + "'";
-		var datetime = "'" + (new Date).toISOString() + "'";
-		db.presence.create({identifier: identifier, datetime: datetime});
-	}
-
-	// Autorecalling Function
-	(function forever() {
-		sync(function(err) {
-			if (err) log.error(err.message);
-			setTimeout(forever, time.minute);
-		});
-	})();
+function Worker() {
+	this.sync_delay = 3 * time.second;
+	domain.add(db);
 };
 
-function sync(_callback) {
-	log.info("Synchronizing");
+Worker.prototype.start = function () {
+	var that = this;
+	
+	that.sync(function() {
+		setTimeout(that.start.bind(that), that.sync_delay);
+	});
+};
+
+Worker.prototype.sync = function (_callback) {
+	log.info("Synchronizing...");
 
 	db.presence.read("synchronized IS NULL").then(function(rows) {
 
-		var promises = [];
-		for (var i in rows) promises.push(api.presence.post(rows[i]));
+		var post_presence = [];
+		for (var i in rows) post_presence.push(api.presence.post(rows[i]));
+		return promise.all(post_presence);
 
-		promise.all(promises).then(function(res) {
-			log.warn(res);
+	}).then(function(res) {
 
-			_callback();
-		});
+		var update_presence = [];
+		for (var i in res) if (res[i] && res[i].id) update_presence.push(db.presence.sync(res[i].id));
+		return promise.all(update_presence);
+
+	}).done(_callback);
+};
+
+// ======================================================================================================================================================
+// Setup Worker
+// ======================================================================================================================================================
+
+process.on("uncaughtException", function(err) {
+	// This should never happens
+	log.fatal("UncaughtException", err);
+});
+
+domain.on("error", function(err) {
+	log.error("Domain", err.stack);
+	setTimeout(main, 1000);
+});
+
+function main() {
+	domain.run(function() {
+		log.info("Starting Worker...");
+
+		// This should never happens
+		if (process.domain === undefined) log.fatal("UndefinedDomain");
+
+		var worker = new Worker();
+		worker.start();
 	});
 };
+
+domain.run(function() {
+	db.init().done(main);
+});

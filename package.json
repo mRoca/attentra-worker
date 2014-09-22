@@ -4,10 +4,8 @@
   "description": "",
   "main": "worker.js",
   "scripts": {
-    "start": "node worker.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "//": "npm run-script badge",
-    "badge": "node worker.js badge"
+    "start": "forever start worker.js | bunyan",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Quentin Dreyer <quentin.dreyer@gmail.com>",
   "license": "ISC",
@@ -17,6 +15,7 @@
     "promise": "~6.0.0",
     "underscore": "~1.7.0",
     "request": "~2.44.0",
-    "bunyan": "~1.0.1"
+    "bunyan": "~1.0.1",
+    "express": "~4.9.3"
   }
 }
