@@ -41,15 +41,17 @@ Worker.prototype.sync = function (_callback) {
 
 	db.presence.read("synchronized IS NULL").then(function(rows) {
 
-		var post_presence = [];
-		for (var i in rows) post_presence.push(api.presence.post(rows[i]));
-		return promise.all(post_presence);
+		return promise.all(_.map(rows, function(row) {
+			return api.presence.post(row);
+		}));
 
-	}).then(function(res) {
+	}).then(function(results) {
 
-		var update_presence = [];
-		for (var i in res) if (res[i] && res[i].id) update_presence.push(db.presence.sync(res[i].id));
-		return promise.all(update_presence);
+		return promise.all(_.chain(results).filter(function(result) {
+			return result.id != null;
+		}).map(function(result) {
+			return db.presence.sync(result.id);
+		}));
 
 	}).done(_callback);
 };

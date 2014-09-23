@@ -5,7 +5,7 @@
   "main": "worker.js",
   "scripts": {
     "start": "forever start worker.js | bunyan",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha tests.js"
   },
   "author": "Quentin Dreyer <quentin.dreyer@gmail.com>",
   "license": "ISC",
@@ -16,6 +16,7 @@
     "underscore": "~1.7.0",
     "request": "~2.44.0",
     "bunyan": "~1.0.1",
-    "express": "~4.9.3"
+    "express": "~4.9.3",
+    "unit.js": "~1.0.2"
   }
 }

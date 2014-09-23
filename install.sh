@@ -1,8 +1,12 @@
 # debian/raspbian installation
 
-apt-get install curl
+apt-get update -y
+apt-get install curl -y
+
 curl -sL https://deb.nodesource.com/setup | bash -
-apt-get install nodejs
-npm install -g forever
+apt-get install nodejs -y
+apt-get autoremove -y
+
+npm install -g forever bunyan
 npm update
 npm start
