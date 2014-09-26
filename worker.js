@@ -39,9 +39,9 @@ Worker.prototype.start = function () {
 Worker.prototype.sync = function (_callback) {
 	log.info("Synchronizing...");
 
-	db.presence.read("synchronized IS NULL").then(function(rows) {
+	db.presence.read("synchronized IS NULL").then(function(data) {
 
-		return promise.all(_.map(rows, function(row) {
+		return promise.all(_.map(data.rows, function(row) {
 			return api.presence.post(row);
 		}));
 
@@ -51,7 +51,7 @@ Worker.prototype.sync = function (_callback) {
 			return result.id != null;
 		}).map(function(result) {
 			return db.presence.sync(result.id);
-		}));
+		}).value());
 
 	}).done(_callback);
 };

@@ -1,0 +1,14 @@
+{"name":"attentra-worker","hostname":"VOSTRO","pid":9292,"lib":"db","level":30,"msg":"Database Ready [ 'presence', 'nosql' ]","time":"2014-09-23T13:56:39.024Z","v":0}
+{"name":"attentra-worker","hostname":"VOSTRO","pid":9292,"lib":"worker","level":30,"msg":"Starting Worker...","time":"2014-09-23T13:56:39.024Z","v":0}
+{"name":"attentra-worker","hostname":"VOSTRO","pid":9292,"lib":"worker","level":30,"msg":"Synchronizing...","time":"2014-09-23T13:56:39.024Z","v":0}
+{"name":"attentra-worker","hostname":"VOSTRO","pid":9292,"lib":"worker","level":30,"msg":"Synchronizing...","time":"2014-09-23T13:56:42.027Z","v":0}
+{"name":"attentra-worker","hostname":"VOSTRO","pid":9292,"lib":"worker","level":30,"msg":"Synchronizing...","time":"2014-09-23T13:56:45.029Z","v":0}
+{"name":"attentra-worker","hostname":"VOSTRO","pid":9292,"lib":"worker","level":30,"msg":"Synchronizing...","time":"2014-09-23T13:56:48.030Z","v":0}
+{"name":"attentra-worker","hostname":"VOSTRO","pid":9292,"lib":"worker","level":30,"msg":"Synchronizing...","time":"2014-09-23T13:56:51.032Z","v":0}
+{"name":"attentra-worker","hostname":"VOSTRO","pid":2140,"lib":"db","level":30,"msg":"Database Ready [ 'presence', 'nosql' ]","time":"2014-09-23T13:58:03.823Z","v":0}
+{"name":"attentra-worker","hostname":"VOSTRO","pid":2956,"lib":"db","level":30,"msg":"Database Ready [ 'presence', 'nosql' ]","time":"2014-09-23T14:01:30.915Z","v":0}
+{"name":"attentra-worker","hostname":"VOSTRO","pid":4392,"lib":"db","level":30,"msg":"Database Ready [ 'presence', 'nosql' ]","time":"2014-09-23T14:05:08.804Z","v":0}
+{"name":"attentra-worker","hostname":"VOSTRO","pid":10192,"lib":"db","level":30,"msg":"Database Ready [ 'presence', 'nosql' ]","time":"2014-09-23T14:05:22.190Z","v":0}
+{"name":"attentra-worker","hostname":"VOSTRO","pid":12560,"lib":"db","level":30,"msg":"Database Ready [ 'presence', 'nosql' ]","time":"2014-09-23T14:05:28.356Z","v":0}
+{"name":"attentra-worker","hostname":"VOSTRO","pid":14148,"lib":"db","level":30,"msg":"Database Ready [ 'presence', 'nosql' ]","time":"2014-09-23T14:06:54.349Z","v":0}
+{"name":"attentra-worker","hostname":"VOSTRO","pid":3468,"lib":"db","level":30,"msg":"Database Ready [ 'presence', 'nosql' ]","time":"2014-09-23T14:08:13.594Z","v":0}
