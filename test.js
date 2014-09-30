@@ -7,6 +7,7 @@
 var _ 		= require("underscore");
 var test 	= require("unit.js");
 var promise = require("promise");
+var util	= require("util");
 
 var rand = parseInt(Math.random() * 100, 10);
 
@@ -48,7 +49,7 @@ describe("Database Library", function() {
 		}).done(done);
 	});
 
-	it("#add(" + table_name + ")", function(done) {
+	it(util.format("#add(%s)", table_name), function(done) {
 		db.add(table_name, table_columns).then(function() {
 			test.object(db).hasProperty(table_name);
 		}).done(done);
@@ -135,47 +136,145 @@ describe("Database Library", function() {
 	});
 });
 
-describe("API Library", function() {
+describe("API Library Doc", function() {
 
 	var api = require("./lib/api");
+	var api_mockup = "doc";
+	var http_ok_code = 200;
+	var http_not_allowed_code = 405;
 
-
-
-	it("#head()", function(done) {
-
-		done();
-
+	it(util.format("#add(%s)", api_mockup), function() {
+		api.add(api_mockup, api_mockup, null, "");
+		test.object(api).hasProperty(api_mockup);
 	});
 
-	it("#get()", function(done) {
-
-		done();
-
+	it("#get() : OK", function(done) {
+		return api[api_mockup].get(http_ok_code).then(function(res) {
+			test.string(res).isNotEmpty();
+		}).done(done);
 	});
 
-	it("#post()", function(done) {
-
-		done();
-
+	it("#head() : OK", function(done) {
+		return api[api_mockup].head(http_ok_code).then(function(res) {
+			test.string(res).isEmpty();
+		}).done(done);
 	});
 
-	it("#put()", function(done) {
-
-		done();
-
+	it("#post() : Method Not Allowed", function(done) {
+		return api[api_mockup].post(null, http_not_allowed_code).done(done);
 	});
 
-	it("#delete()", function(done) {
-
-		done();
-
+	it("#put() : Method Not Allowed", function(done) {
+		return api[api_mockup].put(null, http_not_allowed_code).done(done);
 	});
 
-	it("#options()", function(done) {
+	it("#delete() : Method Not Allowed", function(done) {
+		return api[api_mockup].delete(http_not_allowed_code).done(done);
+	});
 
-		done();
+	it("#trace() : Method Not Allowed", function(done) {
+		return api[api_mockup].trace(http_not_allowed_code).done(done);
+	});
 
+	it("#options() : Method Not Allowed", function(done) {
+		return api[api_mockup].options(http_not_allowed_code).done(done);
+	});
+
+	it("#patch() : Method Not Allowed", function(done) {
+		return api[api_mockup].patch(null, http_not_allowed_code).done(done);
+	});
+
+	it(util.format("#remove(%s)", api_mockup), function() {
+		api.remove(api_mockup);
+		test.object(api).hasNotProperty(api_mockup);
 	});
 
 });
 
+describe("API Library Timeinputs", function() {
+
+	var api = require("./lib/api");
+	var identifier = "MOCKUP_ID";
+	var post_data = {identifier: identifier, datetime: (new Date).toISOString()};
+	var patch_data = {description: "TEST_PATCH"};
+
+	it("#get() /new : OK [checking format]", function(done) {
+
+		// setup
+		var default_presence_endpoint = api.presence.endpoint;
+		api.presence.endpoint = "timeinputs/new";
+
+		return api.presence.get().then(function(res) {
+			test.object(res).hasProperty("children");
+			var children = _.keys(res.children);
+			test.array(children).hasValues(api.presence.params);
+
+			// teardown
+			api.presence.endpoint = default_presence_endpoint;
+
+		}).done(done);
+
+	});
+
+	it("#get() : OK", function(done) {
+		return api.presence.get().then(function(results) {
+			test.array(results).isNotEmpty();
+			_.each(results, function(result) {
+				test.object(result).hasProperty("id");
+			});
+		}).done(done);
+	});
+
+	it("#post() : Created", function(done) {
+		return api.presence.post(post_data).then(function(res) {
+			_.each(_.keys(post_data), function(prop) {
+				test.object(res).hasProperty(prop);
+			});
+
+			test.object(res).hasProperty("id");
+			api.presence.setID(res.id);
+			test.object(api.presence).hasProperty("id");
+		}).done(done);
+	});
+
+	it("#get(posted) : OK", function(done) {
+		return api.presence.get().then(function(res) {
+			_.each(_.keys(post_data), function(prop) {
+				test.object(res).hasProperty(prop);
+			});
+		}).done(done);
+	});	
+
+	it("#patch(getted) : No Content", function(done) {
+		return api.presence.patch(patch_data).then(function(res) {
+			_.each(_.keys(patch_data), function(prop) {
+				test.object(res).hasProperty(prop);
+			});
+			
+			test.object(res).hasProperty("id");
+		}).done(done);
+	});
+
+	it("#get(patched) : OK", function(done) {
+		return api.presence.get().then(function(res) {
+			_.each(_.keys(post_data).concat(_.keys(patch_data)), function(prop) {
+				test.object(res).hasProperty(prop);
+			});
+			
+			test.string(res.description).isIdenticalTo(patch_data.description);
+		}).done(done);
+	});
+
+	it("#delete(getted) : No Content", function(done) {
+		return api.presence.delete().then(function(res) {
+			test.value(res).isNull();
+		}).done(done);
+	});
+
+	it("#get(deleted) : Not Found", function(done) {
+		return api.presence.get(404).then(function(res) {
+			test.value(res).isNull();
+		}).done(done);
+	});
+
+});
