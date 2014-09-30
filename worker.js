@@ -17,6 +17,7 @@ var api 	= require("./lib/api");
 var db 		= require("./lib/db");
 var conf 	= require("./lib/config");
 var time 	= require("./lib/time");
+var web		= require("./lib/web");
 var log 	= require("./lib/log").child({lib: "worker"});
 
 // ======================================================================================================================================================

@@ -1,31 +1,32 @@
 {
-	"name": "attentra-worker",
-	"version": "0.0.0",
-	"description": "",
-	"main": "worker.js",
-	"scripts": {
-		"start": "node worker.js | bunyan",
-		"test": "set NODE_ENV=test && mocha test.js",
-		"cov": "set NODE_ENV=test && mocha -r blanket -R html-cov > web/coverage.html",
-		"prod": "set NODE_ENV=production && forever start worker.js"
-	},
-	"config": {
-		"blanket": {
-			"pattern": "",
-			"data-cover-never": "node_modules"
-		}
-	},
-	"author": "Quentin Dreyer <quentin.dreyer@triotech.fr>",
-	"license": "ISC",
-	"dependencies": {
-		"gpio": "~0.2.5",
-		"sqlite3": "~3.0.0",
-		"promise": "~6.0.0",
-		"underscore": "~1.7.0",
-		"request": "~2.44.0",
-		"bunyan": "~1.0.1",
-		"express": "~4.9.3",
-		"unit.js": "~1.0.2",
-		"blanket": "~1.1.6"
-	}
+  "name": "attentra-worker",
+  "version": "0.0.0",
+  "description": "",
+  "main": "worker.js",
+  "scripts": {
+    "start": "node worker.js | bunyan",
+    "test": "set NODE_ENV=test && mocha test.js",
+    "cov": "set NODE_ENV=test && mocha -r blanket -R html-cov > web/coverage.html",
+    "prod": "set NODE_ENV=production && forever start worker.js"
+  },
+  "config": {
+    "blanket": {
+      "pattern": "",
+      "data-cover-never": "node_modules"
+    }
+  },
+  "author": "Quentin Dreyer <quentin.dreyer@triotech.fr>",
+  "license": "ISC",
+  "dependencies": {
+    "gpio": "~0.2.5",
+    "sqlite3": "~3.0.0",
+    "promise": "~6.0.0",
+    "underscore": "~1.7.0",
+    "request": "~2.44.0",
+    "bunyan": "~1.0.1",
+    "express": "~4.9.3",
+    "unit.js": "~1.0.2",
+    "blanket": "~1.1.6",
+    "connect-domain": "~0.5.0"
+  }
 }
