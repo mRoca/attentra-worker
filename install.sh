@@ -7,6 +7,5 @@ curl -sL https://deb.nodesource.com/setup | bash -
 apt-get install nodejs -y
 apt-get autoremove -y
 
-npm install -g forever bunyan
+npm install -g forever
 npm update
-npm start

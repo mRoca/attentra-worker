@@ -136,7 +136,7 @@ describe("Database Library", function() {
 	});
 });
 
-describe("API Library Doc", function() {
+describe("API Library (Documentation)", function() {
 
 	var api = require("./lib/api");
 	var api_mockup = "doc";
@@ -191,7 +191,7 @@ describe("API Library Doc", function() {
 
 });
 
-describe("API Library Timeinputs", function() {
+describe("API Library (Timeinputs)", function() {
 
 	var api = require("./lib/api");
 	var identifier = "MOCKUP_ID";
@@ -275,6 +275,32 @@ describe("API Library Timeinputs", function() {
 		return api.presence.get(404).then(function(res) {
 			test.value(res).isNull();
 		}).done(done);
+	});
+
+});
+
+describe("Logger Library", function() {
+
+	var log = require('./lib/log');
+	var limit = 3;
+
+	it("#clear + #buffer()", function() {
+		log.clear();
+		var logs = log.buffer();
+		test.array(logs).isEmpty();
+	});
+	
+	it("#limit + #buffer()", function() {
+		log.limit(limit);
+		for (var i = 0, n = limit * 2; i < n; i++) log.trace(i);
+		
+		var logs = log.buffer();
+		test.array(logs).hasLength(limit);
+		_.each(logs, function(log) {
+			test.number(parseInt(log.msg, 10)).match(function(it) {
+				return it >= limit;
+			});
+		});
 	});
 
 });
